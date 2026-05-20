@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Labb3/Labb3.csproj" />
+  <Project Path="MinApi/MinApi.csproj" />
+</Solution>
