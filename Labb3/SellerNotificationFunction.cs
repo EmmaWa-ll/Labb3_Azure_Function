@@ -1,6 +1,8 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using MinApi.Models;
+using System.Net;
+using System.Net.Mail;
 
 namespace Labb3;
 
@@ -17,7 +19,7 @@ public class SellerNotificationFunction
     public async Task Run([CosmosDBTrigger(
         databaseName: "CosmoDBLabb3",
         containerName: "Customers",
-        Connection = "ConnectionStrings:CosmosDBConnection",
+        Connection = "CosmosDBConnection",
         LeaseContainerName = "leases",
         CreateLeaseContainerIfNotExists = true)]
         IReadOnlyList<Customer> customers)
@@ -30,8 +32,8 @@ public class SellerNotificationFunction
             if (customer.Seller == null || string.IsNullOrWhiteSpace(customer.Seller.Email))
                 continue;
 
+            _logger.LogInformation("FUNCTION TRIGGERED");
             await SendEmailAsync(customer);
-
             _logger.LogInformation($"Email sent to {customer.Seller.Email}");
         }
     }
@@ -56,9 +58,14 @@ public class SellerNotificationFunction
             $"Best regards \n THE SYSTEM";
 
 
+        using var client = new SmtpClient(host, port)
+        {
+            Credentials = new NetworkCredential(user, pass),
+            EnableSsl = true
+        };
+        var mail = new MailMessage("crm@system.com", customer.Seller.Email, subject, body);
 
-
-
+        await client.SendMailAsync(mail);
 
     }
 }

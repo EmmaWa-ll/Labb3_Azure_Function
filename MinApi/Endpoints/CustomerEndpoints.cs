@@ -17,12 +17,17 @@ public static class CustomerEndpoints
         })
             .WithSummary("Add a new customer");
 
+
+
         app.MapGet("/customers", async (CosmoService db) =>
         {
             var customers = await db.GetAllCustomersAsync();
             return Results.Ok(customers);
         })
             .WithSummary("Get all customers");
+
+
+
 
         app.MapGet("/customers/{id}", async (string id, CosmoService db) =>
         {
@@ -44,6 +49,7 @@ public static class CustomerEndpoints
             .WithSummary("Serach customer by customers name or sellers name");
 
 
+
         app.MapPut("/customers/{id}", async (string id, Customer customer, CosmoService db) =>
         {
             var updated = await db.UpdateCustomerAsync(id, customer);
@@ -51,6 +57,9 @@ public static class CustomerEndpoints
 
         })
             .WithSummary("Update a customer");
+
+
+
 
         app.MapDelete("/customers/{id}", async (string id, CosmoService db) =>
         {
