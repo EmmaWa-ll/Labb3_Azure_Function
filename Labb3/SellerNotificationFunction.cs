@@ -38,6 +38,27 @@ public class SellerNotificationFunction
 
     private async Task SendEmailAsync(Customer customer)
     {
+        var host = Environment.GetEnvironmentVariable("Mailtrap:Host");
+        var port = int.Parse(Environment.GetEnvironmentVariable("Mailtrap:Port")!);
+        var user = Environment.GetEnvironmentVariable("Mailtrap:User");
+        var pass = Environment.GetEnvironmentVariable("Mailtrap:Pass");
+
+        var subject = $"new customer: {customer.Name}";
+
+        var body =
+            $"Hey: {customer.Seller.Name}!\n\n" +
+            $"You are the responsible seller for the customer: \n\n" +
+            $"Title: {customer.Title}\n" +
+            $"Name: {customer.Name}\n" +
+            $"Phone: {customer.Phone}\n" +
+            $"Email: {customer.Email}\n" +
+            $"Address: {customer.Address}\n\n" +
+            $"Best regards \n THE SYSTEM";
+
+
+
+
+
 
     }
 }

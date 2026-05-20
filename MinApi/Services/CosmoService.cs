@@ -9,9 +9,9 @@ namespace MinApi.Services
 
         public CosmoService(IConfiguration config)
         {
-            var connectionString = config["CosmoDB:ConnectionString"];
-            var databaseName = config["CosmoDB:Databasename"];
-            var containerName = config["CosmoDB:ContainerName"];
+            var connectionString = config["CosmosDb:ConnectionString"];
+            var databaseName = config["CosmosDb:Databasename"];
+            var containerName = config["CosmosDb:ContainerName"];
 
             var client = new CosmosClient(connectionString);
             _container = client.GetContainer(databaseName, containerName);
@@ -55,7 +55,7 @@ namespace MinApi.Services
         }
 
 
-        public async Task<List<Customer>> SearchCustomerAsync(string search)
+        public async Task<List<Customer>> SearchAsync(string search)
         {
             var query = new QueryDefinition(
                 "SELECT * FROM c WHERE CONTAINS(LOWER(c.Name), LOWER(@search)) OR CONTAINS(LOWER(c.Seller.Name), LOWER(@search))"
